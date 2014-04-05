@@ -1,8 +1,43 @@
-
 <div class="row">
-  <div class="col-md-6 col-md-offset-3">
-    <h1>Help Farmer Tate</h1>
+  <h1 class="text-center">Welcome to Farmer Joe's Farm</h1>
+</div>
+<div class="row">
+  <div class="col-md-offset-2 col-md-8">
+    <p class="big-text text-center">
+      <%= image_tag 'farmer-1.jpg', class: 'pull-right' %>
+      I am farmer Joe.  I lost my sheep.  My cows need milked. My animals are losing health.  Click on a picture below to help. Thanks,
+    </p>
+    <p class="big-text text-center">
+       -- Farmer Joe
+    </p>
   </div>
 </div>
-
+<div class="row">
+  <div class="col-md-4 text-center">
+    <h3>Round-Up Sheep</h3>
+    <%= link_to((image_tag  'sheep-1.gif', height: 200), round_up_game_path) %>
+  </div>
+  <div class="col-md-4 text-center">
+    <h3>Milk Cows</h3>
+    <%= link_to((image_tag  'cow-1.png', height: 200), milk_cow_game_path) %>
+  </div>
+  <div class="col-md-4 text-center">
+    <h3>Ride Horses</h3>
+    <%= link_to((image_tag  'horse-1.jpg', height: 200), horse_ride_game_path) %>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-4 text-center">
+    <h3>Feed Animals</h3>
+    <%= link_to((image_tag  'hay-1.jpg', height: 200), feed_animals_game_path) %>
+  </div>
+  <div class="col-md-4 text-center">
+    <h3>Exercise Pigs</h3>
+    <%= link_to((image_tag  'pig-1.jpg', height: 200), exercise_pigs_game_path) %>
+  </div>
+  <div class="col-md-4 text-center">
+    <h3>Visit Vet</h3>
+    <%= link_to((image_tag  'red-cross.jpg', height: 150), vet_game_path) %>
+  </div>
+</div>
 

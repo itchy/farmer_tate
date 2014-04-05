@@ -5,6 +5,13 @@ FarmerTate::Application.routes.draw do
   # You can have the root of your site routed with "root"
   root 'farm#index'
 
+  get 'games/round-up' => 'games#round_up', as: :round_up_game
+  get 'games/milk-cow' => 'games#milk_cow', as: :milk_cow_game
+  get 'games/horse-ride' => 'games#horse_ride', as: :horse_ride_game
+  get 'games/feed-animals' => 'games#feed_animals', as: :feed_animals_game
+  get 'games/exercise-pigs' => 'games#exercise_pigs', as: :exercise_pigs_game
+  get 'games/visit-vet' => 'games#vet', as: :vet_game
+
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
 
