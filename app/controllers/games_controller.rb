@@ -13,7 +13,6 @@ class GamesController < ApplicationController
   end
 
   def feed_animals
-    render text: "This will be the animal feeding riding game"
   end
 
   def exercise_pigs

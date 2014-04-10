@@ -5,3 +5,13 @@
 .big-text {
   font-size: x-large;
 }
+
+canvas{
+  border: 1px solid black;
+  cursor: none;
+}
+
+canvas#feed-animals-game{
+  width:  800px;
+  height: 600px;
+}
