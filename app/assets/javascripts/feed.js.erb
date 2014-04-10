@@ -15,7 +15,7 @@ var FeedAnimalsGame = FeedAnimalsGame || {
       canvas.width = FeedAnimalsGame.width;
       canvas.height = FeedAnimalsGame.height;
     }
-   image.src = '/assets/hay-feed-1.png';
+   image.src = "<%= asset_path('hay-feed-1.png') %>";
    canvas.addEventListener("mousemove", this.redrawFeed);
   },
 
@@ -26,7 +26,7 @@ var FeedAnimalsGame = FeedAnimalsGame || {
       canvas.width = FeedAnimalsGame.width;
       canvas.height = FeedAnimalsGame.height;
     }
-   cowImage.src = '/assets/cow-1.png';
+   cowImage.src = "<%= asset_path('cow-1.png') %>" ;
   },
 
   redrawAnimals: function(){
