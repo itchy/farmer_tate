@@ -1,11 +1,96 @@
+// ==============================================
+//       Base Feed Animal Class
+// ==============================================
+
+function FeedAnimal(){
+  this.myCanvas     = 'happy';
+  this.image        = new Image();
+  this.hungry       = true;
+  this.canvasHeight = 100;
+  this.canvasWidth  = 100;
+
+  this.create = function(){
+    this.image.onload = function() {
+    };
+    this.image.src = this.imageSrc;
+  };
+
+  this.checkFeed = function(x,y){
+    if(this.onTarget(x,y)){
+      if(this.hungry){
+        this.hungry = false;
+        FeedAnimalsGame.score = FeedAnimalsGame.score + this.scoreValue;
+      }
+    } else {
+      this.hungry = true;
+    }
+  };
+
+  this.onTarget = function(x,y){
+    var result = false;
+    if((x < this.xPos + this.xLT) && ( this.xPos + this.xGT < x)){
+      if((y < this.yPos + this.yLT) && ( this.yPos + this.yGT < y)){
+        result = true;
+      };
+    };
+    return result;
+  };
+}
+
+// ==============================================
+//                     COW
+// ==============================================
+
+function FeedCow(canvas, canvas_height, canvas_width, x, y){
+  this.myCanvas     = canvas;
+  this.xPos         = x;
+  this.yPos         = y;
+  this.xLT          = 200;
+  this.xGT          = 50;
+  this.yLT          = 300;
+  this.yGT          = 250;
+  this.imageSrc     = "<%= asset_path('cow-1.png') %>";
+  this.scoreValue   = 100;
+  this.canvasHeight = canvas_height;
+  this.canvasWidth  = canvas_width;
+
+  this.image.src = this.imageSrc;
+}
+
+FeedCow.prototype = new FeedAnimal();
+
+// ==============================================
+//       Sheep
+// ==============================================
+
+function FeedSheep(canvas, canvas_height, canvas_width, x, y){
+  this.myCanvas     = canvas;
+  this.xPos         = x;
+  this.yPos         = y;
+  this.xLT          = 150;
+  this.xGT          = 50;
+  this.yLT          = 300;
+  this.yGT          = 200;
+  this.imageSrc     = "<%= asset_path('sheep-1.gif') %>";
+  this.scoreValue   = 50;
+  this.canvasHeight = canvas_height;
+  this.canvasWidth  = canvas_width;
+
+  this.image.src = this.imageSrc;
+}
+
+FeedSheep.prototype = new FeedAnimal();
+
+// ==============================================
+//          Feed Animals Game
+// ==============================================
+
 var FeedAnimalsGame = FeedAnimalsGame || {
   width:      2400,
   height:     1800,
   multiplier: 3,
   feedImage: new Image(),
-  cowImage:  new Image(),
   score:     0,
-  hungryCow: true,
 
   initialize:  function(){
     var image  = this.feedImage;
@@ -20,20 +105,18 @@ var FeedAnimalsGame = FeedAnimalsGame || {
   },
 
   loadAnimals: function(){
-    var canvas = this.gameCanvas;
-    var cowImage  = this.cowImage;
-    cowImage.onload = function() {
-      canvas.width = FeedAnimalsGame.width;
-      canvas.height = FeedAnimalsGame.height;
-    }
-   cowImage.src = "<%= asset_path('cow-1.png') %>" ;
+    FeedAnimalsGame.cowOne = new FeedCow(FeedAnimalsGame.gameCanvas, FeedAnimalsGame.height, FeedAnimalsGame.width, 200, 200);
+    FeedAnimalsGame.sheep  = new FeedSheep(FeedAnimalsGame.gameCanvas, FeedAnimalsGame.height, FeedAnimalsGame.width, 800, 800);
   },
+
 
   redrawAnimals: function(){
     var canvas = this.gameCanvas;
-    var cowImage  = this.cowImage;
+    var cow = this.cowOne;
+    var sheep = this.sheep;
     canvas.width = FeedAnimalsGame.width;
-    canvas.getContext("2d").drawImage(cowImage, 200, 200);
+    canvas.getContext("2d").drawImage(cow.image, cow.xPos, cow.yPos);
+    canvas.getContext("2d").drawImage(sheep.image, sheep.xPos, sheep.yPos);
     FeedAnimalsGame.showScore();
   },
 
@@ -44,39 +127,20 @@ var FeedAnimalsGame = FeedAnimalsGame || {
     ctx.fillText("Score: " + FeedAnimalsGame.score ,1900,100);
   },
 
-  feedCow: function(){
-    if(FeedAnimalsGame.hungryCow){
-      FeedAnimalsGame.score = FeedAnimalsGame.score + 100;
-      FeedAnimalsGame.hungryCow = false;
-    }
-  },
-
-  checkTouchAnimal: function(x,y){
-    var canvas  = this.gameCanvas;
-    var result  = false;
-    var targetX = 200;
-    var targetY = 200;
-    if((x < targetX + 200) && ( targetX + 50 < x)){
-      if((y < targetY + 300) && ( targetY + 250 < y)){
-        result = true;
-      };
-    };
-    return result;
-  },
-
   redrawFeed: function(mouseEvent){
     var xPos = mouseEvent.offsetX * FeedAnimalsGame.multiplier;
     var yPos = mouseEvent.offsetY * FeedAnimalsGame.multiplier;
     FeedAnimalsGame.redrawAnimals();
     this.getContext("2d").drawImage(FeedAnimalsGame.feedImage, xPos, yPos);
-    if(FeedAnimalsGame.checkTouchAnimal(xPos, yPos)){
-      FeedAnimalsGame.feedCow();
-    } else {
-      FeedAnimalsGame.hungryCow = true;
-    };
+    FeedAnimalsGame.cowOne.checkFeed(xPos, yPos);
+    FeedAnimalsGame.sheep.checkFeed(xPos, yPos);
   }
 };
 
+
+// ==============================================
+//       Start Game on Page Load
+// ==============================================
 
 $(function() {
   FeedAnimalsGame.gameCanvas = $('#feed-animals-game')[0];
