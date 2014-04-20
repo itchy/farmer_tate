@@ -68,9 +68,9 @@ function FeedSheep(canvas, canvas_height, canvas_width, x, y){
   this.xPos         = x;
   this.yPos         = y;
   this.xLT          = 150;
-  this.xGT          = 50;
-  this.yLT          = 300;
-  this.yGT          = 200;
+  this.xGT          = -50;
+  this.yLT          = 250;
+  this.yGT          = 100;
   this.imageSrc     = "<%= asset_path('sheep-1.gif') %>";
   this.scoreValue   = 50;
   this.canvasHeight = canvas_height;
@@ -80,6 +80,38 @@ function FeedSheep(canvas, canvas_height, canvas_width, x, y){
 }
 
 FeedSheep.prototype = new FeedAnimal();
+
+// ==============================================
+//       Pig
+// ==============================================
+
+function FeedPig(canvas, canvas_height, canvas_width, x, y){
+  this.myCanvas     = canvas;
+  this.xPos         = x;
+  this.yPos         = y;
+  this.xLT          = 100;
+  this.xGT          = -100;
+  this.yLT          = 300;
+  this.yGT          = 100;
+  this.imageSrc     = "<%= asset_path('pig-1.png') %>";
+  this.scoreValue   = 500;
+  this.canvasHeight = canvas_height;
+  this.canvasWidth  = canvas_width;
+
+  this.image.src = this.imageSrc;
+
+  this.onTarget = function(x,y){
+    var result = false;
+    if((x < this.xPos + this.xLT) && ( this.xPos + this.xGT < x)){
+      if((y < this.yPos + this.yLT) && ( this.yPos + this.yGT < y)){
+        result = true;
+      };
+    };
+    return result;
+  };
+}
+
+FeedPig.prototype = new FeedAnimal();
 
 // ==============================================
 //          Feed Animals Game
@@ -106,17 +138,20 @@ var FeedAnimalsGame = FeedAnimalsGame || {
 
   loadAnimals: function(){
     FeedAnimalsGame.cowOne = new FeedCow(FeedAnimalsGame.gameCanvas, FeedAnimalsGame.height, FeedAnimalsGame.width, 200, 200);
-    FeedAnimalsGame.sheep  = new FeedSheep(FeedAnimalsGame.gameCanvas, FeedAnimalsGame.height, FeedAnimalsGame.width, 800, 800);
+    FeedAnimalsGame.sheep  = new FeedSheep(FeedAnimalsGame.gameCanvas, FeedAnimalsGame.height, FeedAnimalsGame.width, 1000, 800);
+    FeedAnimalsGame.pig    = new FeedPig(FeedAnimalsGame.gameCanvas, FeedAnimalsGame.height, FeedAnimalsGame.width, 1600, 1400);
   },
 
 
   redrawAnimals: function(){
     var canvas = this.gameCanvas;
-    var cow = this.cowOne;
-    var sheep = this.sheep;
     canvas.width = FeedAnimalsGame.width;
+    var cow   = this.cowOne;
+    var sheep = this.sheep;
+    var pig   = this.pig;
     canvas.getContext("2d").drawImage(cow.image, cow.xPos, cow.yPos);
     canvas.getContext("2d").drawImage(sheep.image, sheep.xPos, sheep.yPos);
+    canvas.getContext("2d").drawImage(pig.image, pig.xPos, pig.yPos);
     FeedAnimalsGame.showScore();
   },
 
@@ -134,6 +169,7 @@ var FeedAnimalsGame = FeedAnimalsGame || {
     this.getContext("2d").drawImage(FeedAnimalsGame.feedImage, xPos, yPos);
     FeedAnimalsGame.cowOne.checkFeed(xPos, yPos);
     FeedAnimalsGame.sheep.checkFeed(xPos, yPos);
+    FeedAnimalsGame.pig.checkFeed(xPos, yPos);
   }
 };
 
